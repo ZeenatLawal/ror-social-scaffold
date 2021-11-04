@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
 
+  namespace :api do
+    namespace :v1 do
+      post :auth, to: "authentication#create"
+      post :register, to: "registration#create"
+      resources :posts, only: [:index, :create] do
+        resources :comments, only: [:index, :create]
+      end
+    end 
+  end
+
   post 'friendships/create'
   root 'posts#index'
 
@@ -11,6 +21,7 @@ Rails.application.routes.draw do
       delete :destroy
     end
   end
+
   resources :posts, only: [:index, :create] do
     resources :comments, only: [:create]
     resources :likes, only: [:create, :destroy]
